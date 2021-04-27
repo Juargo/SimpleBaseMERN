@@ -43,7 +43,13 @@ db.on("disconnected", function () {
 });
 
 const getBooks = function (req, res) {
-  res.send("Get a random book");
+  Book.find(function(err, todos) {
+    if (err) {
+      res.status(503).send(err);
+    }
+    res.json(todos);
+  });
+  // res.send("Get a random book");
 };
 
 const addBook = function (req, res) {
