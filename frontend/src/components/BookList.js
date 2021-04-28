@@ -1,14 +1,14 @@
 import React from 'react';
 import Book from "./Book";
 
-const BookList = ({ list }) => {
+const BookList = ({ list, removeBook }) => {
   return (
     <ul className='Booklist'>
       {list.map((item) => {
         return (
           <Book 
             book={item}
-            // remove={() => {removeTodo(item._id)}}
+            remove={() => {removeBook(item._id)}}
             // key={item._id}
           />
         )

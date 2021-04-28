@@ -6,9 +6,9 @@ const Book = ({ book, remove }) => {
   return (
     <li className=''>
       {book.bookName}
-      {/* <span className={style.delete} onClick={remove}>
+      <span className='' onClick={remove}>
         <span>X</span>
-      </span> */}
+      </span>
     </li>
   );
 };

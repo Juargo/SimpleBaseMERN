@@ -43,7 +43,7 @@ db.on("disconnected", function () {
 });
 
 const getBooks = function (req, res) {
-  Book.find(function(err, todos) {
+  Book.find(function (err, todos) {
     if (err) {
       res.status(503).send(err);
     }
@@ -53,9 +53,9 @@ const getBooks = function (req, res) {
 };
 
 const addBook = function (req, res) {
-  console.log(req.body.nombre);
+  console.log(req.body.bookName);
   const book = new Book({
-    bookName: req.body.nombre,
+    bookName: req.body.bookName,
   });
   book.save((err) => {
     console.log(err);
@@ -63,15 +63,51 @@ const addBook = function (req, res) {
       res.status(500).send(err);
     } else {
       res.json({
-        message: 'Todo successfully added!'
+        message: "book successfully added!",
       });
     }
   });
-  res.send("Add a book");
+  // res.send("Add a book");
 };
 
 const updateBook = function (req, res) {
-  res.send("Update the book");
+  const bookName = req.body.bookName;
+  const bookId = req.body.bookId
+
+  Book.findByIdAndUpdate(
+    bookId,
+    {
+      bookName : bookName
+    },
+    {
+      safe: true,
+      upsert: true,
+      new: true,
+    },
+    function (err, raw) {
+      if (err) {
+        console.err(err);
+        res.status(503).send(err);
+      } else {
+        res.json({
+          message: `Updated book ${bookId}`,
+        });
+      }
+    }
+  );
 };
 
-module.exports = { getBooks, addBook, updateBook };
+const deleteBook = function(req,res){
+  Book.remove({
+    _id: req.body.bookId
+  }, function(err, todo) {
+    if (err) {
+      res.status(503).send(err);
+    }
+    res.json({
+      message: 'Book has been deleted'
+    })
+  });
+}
+
+module.exports = { getBooks, addBook, updateBook,deleteBook };
